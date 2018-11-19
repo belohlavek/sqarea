@@ -10,7 +10,6 @@ export enum Key {
   SPACE = 'SPACE',
   NONE = 'NONE'
 }
-
 const KeyCode = {
   87: Key.W,
   65: Key.A,
@@ -44,6 +43,7 @@ export class InputController {
     return InputController.Instance
   }
 
+<<<<<<< HEAD
   private constructor() {}
 
   startListening() {
@@ -52,6 +52,29 @@ export class InputController {
     window.addEventListener('keydown', this.onKeyDown)
     window.addEventListener('keyup', this.onKeyUp)
 
+    this.isListening = true
+=======
+  private constructor() {
+>>>>>>> feat: start/stop input controller
+  }
+  
+  stopListening() {
+    if (!this.isListening) return
+
+    window.removeEventListener('keydown', this.onKeyDown)
+    window.removeEventListener('keyup', this.onKeyUp)
+    
+    this.isListening = false
+  }  
+
+<<<<<<< HEAD
+=======
+  startListening() {
+    if (this.isListening) return
+    
+    window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('keyup', this.onKeyUp)
+    
     this.isListening = true
   }
 
@@ -64,6 +87,7 @@ export class InputController {
     this.isListening = false
   }
 
+>>>>>>> feat: start/stop input controller
   onKeyDown = evt => {
     const key = this.getKeyFromKeyCode(evt.which)
     this.keyState[key] = true
