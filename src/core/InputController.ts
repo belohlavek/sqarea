@@ -1,4 +1,8 @@
 export enum Key {
+  W = 'W',
+  A = 'A',
+  S = 'S',
+  D = 'D',
   LEFT = 'LEFT',
   DOWN = 'DOWN',
   RIGHT = 'RIGHT',
@@ -7,6 +11,10 @@ export enum Key {
   NONE = 'NONE'
 }
 const KeyCode = {
+  87: Key.W,
+  65: Key.A,
+  83: Key.S,
+  68: Key.D,
   40: Key.DOWN,
   38: Key.UP,
   37: Key.LEFT,
@@ -62,7 +70,11 @@ export class InputController {
     this.keyState[key] = false
   }
   
-  isDown(key: Key) {
+  isAnyDown(keys: Key[]) {
+    return keys.some(this.isDown)
+  }
+  
+  isDown = (key: Key) => {
     return this.keyState[key]
   }
 
