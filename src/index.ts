@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Engine } from 'src/core'
+import { Engine, InputController } from 'src/core'
 import { BoxShape, Transform } from 'src/components'
 import { MovementSystem } from 'src/systems'
 import { PlayableEntity } from 'src/entities'
@@ -7,6 +7,8 @@ import { PlayableEntity } from 'src/entities'
 const view = document.getElementById('game') as HTMLCanvasElement
 const app = new PIXI.Application({ view })
 const engine = Engine.getInstance(app)
+
+InputController.getInstance().startListening()
 
 function init() {
   app.ticker.add(dt => {
