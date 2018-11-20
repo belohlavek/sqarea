@@ -12,6 +12,8 @@ import { EventManager, EventCallback } from './EventManager'
 export class Engine {
   systems: Record<string, System> = {}
   entities: Record<string, Entity> = {}
+  engineObjects: Record<string, PIXI.Container> = {}
+  app: PIXI.Application
 
   private static Instance: Engine
   private eventManager: EventManager = new EventManager()

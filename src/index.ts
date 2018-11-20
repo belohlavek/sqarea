@@ -24,12 +24,19 @@ function init() {
   })
 }
 
-const entity = new PlayableEntity()
-entity.addComponent(new BoxShape())
-entity.addComponent(new Transform())
+const playableEntity = new PlayableEntity()
+playableEntity.addComponent(new BoxShape())
+playableEntity.addComponent(new Transform())
+
+const bulletEntity = new BulletEntity()
+bulletEntity.addComponent(new CircleShape())
+bulletEntity.addComponent(new Transform())
+
 engine.addSystem(new RenderingSystem(app))
 engine.addSystem(new TransformSystem(app))
-engine.addSystem(new MovementSystem(entity))
-engine.addEntity(entity)
+engine.addSystem(new MovementSystem(playableEntity))
+
+engine.addEntity(playableEntity)
+engine.addEntity(bulletEntity)
 
 init()
