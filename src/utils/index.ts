@@ -5,3 +5,15 @@ export function uuid() {
     return v.toString(16)
   })
 }
+
+export function throttle(callback: Function, limit: number) {
+  let wait = false
+  return function() {
+    if (!wait) {
+      const result = callback.call(null)
+      wait = true
+      setTimeout(() => (wait = false), limit)
+      return result
+    }
+  }
+}
