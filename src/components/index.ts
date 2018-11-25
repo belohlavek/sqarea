@@ -1,5 +1,6 @@
 export { BoxShape } from './BoxShape'
 export { CircleShape } from './CircleShape'
 export { ShapeComponent } from './ShapeComponent'
+export { Bullet } from './Bullet'
 export { Transform } from './Transform'
 export { ComponentType, BOX_SHAPE } from './types'

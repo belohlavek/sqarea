@@ -1,6 +1,6 @@
 import { System, InputController, Key } from 'src/core'
 import { PlayableEntity, BulletEntity } from 'src/entities'
-import { Transform, CircleShape, BoxShape } from 'src/components'
+import { Transform, CircleShape, BoxShape, Bullet } from 'src/components'
 import { Constants } from 'src/gameplay'
 import { throttle } from 'src/utils'
 
@@ -12,7 +12,7 @@ export class BulletSpreadSystem extends System {
   constructor(e: PlayableEntity) {
     super()
     this.entity = e
-    this.addSpread = throttle(this.addSpread, 500)
+    this.addSpread = throttle(this.addSpread, Constants.BULLET_THROTTLE_MS)
   }
 
   update(dt: number) {
@@ -23,13 +23,15 @@ export class BulletSpreadSystem extends System {
     if (this.bullets.length > 0) {
       const newBullets: BulletEntity[] = []
 
-      for (const bullet of this.bullets) {
-        if (bullet.exceededMaxDistance()) {
-          this.engine.removeEntity(bullet)
+      for (const bulletEntity of this.bullets) {
+        const bullet = bulletEntity.getComponent<Bullet>('bullet')
+        const transform = bulletEntity.getComponent<Transform>('transform')
+
+        if (bullet.exceedsMaxDistance(transform.position)) {
+          this.engine.removeEntity(bulletEntity)
         } else {
-          const bulletTransform = bullet.getComponent<Transform>('transform')
-          bulletTransform.position.x += Constants.BULLET_SPEED
-          newBullets.push(bullet)
+          transform.position.x += Constants.BULLET_SPEED * dt
+          newBullets.push(bulletEntity)
         }
       }
       this.bullets = newBullets
@@ -38,23 +40,24 @@ export class BulletSpreadSystem extends System {
 
   addSpread = () => {
     this.engine.addEntity(this.createBullet())
-    this.engine.addEntity(this.createBullet())
-    this.engine.addEntity(this.createBullet())
   }
 
   createBullet() {
     const entityTransform = this.entity.getComponent<Transform>('transform')
     const entityBoxShape = this.entity.getComponent<BoxShape>('shape')
 
-    const bulletEntity = new BulletEntity(this.entity)
+    const bulletEntity = new BulletEntity()
     const transform = new Transform()
 
+    const position = entityTransform.position.clone()
+
     // Right face
-    transform.position.x = entityTransform.position.x + entityBoxShape.width
-    transform.position.y = entityTransform.position.y + entityBoxShape.height / 2
+    transform.position.x = position.x + entityBoxShape.width
+    transform.position.y = position.y + entityBoxShape.height / 2
     transform.rotation = Math.round(Math.random() * 180)
 
     bulletEntity.addComponent(transform)
+    bulletEntity.addComponent(new Bullet({ initialPosition: position }))
     bulletEntity.addComponent(new CircleShape())
 
     this.bullets.push(bulletEntity)
