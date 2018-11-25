@@ -14,7 +14,7 @@ export class TransformSystem extends InternalSystem {
 
       if (transform.isDirty) {
         const container = this.app.stage.getChildByName(entity.uuid) as PIXI.Container
-        transform.updateContainer(container)
+        transform.updateContainer(container, new PIXI.Graphics())
         transform.isDirty = false
       }
     }
