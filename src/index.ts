@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import { Engine, InputController } from 'src/core'
 import { BoxShape, Transform, CircleShape } from 'src/components'
 import { MovementSystem, BulletSpreadSystem } from 'src/systems'
-import { PlayableEntity } from 'src/entities'
+import { PlayableEntity, BulletEntity } from 'src/entities'
 import { RenderingSystem } from './systems/RenderingSystem'
 import { TransformSystem } from './systems/TransformSystem'
 
@@ -28,16 +28,11 @@ const playableEntity = new PlayableEntity()
 playableEntity.addComponent(new BoxShape())
 playableEntity.addComponent(new Transform())
 
-const bulletEntity = new BulletEntity()
-bulletEntity.addComponent(new CircleShape())
-bulletEntity.addComponent(new Transform())
-
 engine.addSystem(new RenderingSystem(app))
 engine.addSystem(new TransformSystem(app))
 engine.addSystem(new MovementSystem(playableEntity))
 engine.addSystem(new BulletSpreadSystem(playableEntity))
 
 engine.addEntity(playableEntity)
-engine.addEntity(bulletEntity)
 
 init()

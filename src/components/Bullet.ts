@@ -1,26 +1,25 @@
 import * as PIXI from 'pixi.js'
 import { Component } from 'src/core/Component'
-import { DataObject } from 'src/core/DataObject'
 import { Constants } from 'src/gameplay'
 
 type BulletAttributes = {
-  initialPosition?: PIXI.Point
+  initialPosition: PIXI.Point
 }
 
-export class Bullet extends Component {
-  // @internal
-  initialPosition: PIXI.Point
-
-  constructor({ initialPosition = new PIXI.Point(0, 0) }: BulletAttributes = {}) {
-    super('bullet')
-
-    this.initialPosition = initialPosition
+// TODO: we should add position, velocity and direction to the bullet to animate it
+export class Bullet extends Component<BulletAttributes> {
+  constructor(initAttributes: Partial<BulletAttributes> = {}) {
+    super('bullet', {
+      initialPosition: new PIXI.Point(0, 0),
+      ...initAttributes
+    })
   }
 
   exceedsMaxDistance(position: PIXI.Point) {
+    const { initialPosition } = this.attributes
     return (
-      Math.abs(this.initialPosition.x - position.x) > Constants.MAX_BULLET_DISTANCE ||
-      Math.abs(this.initialPosition.y - position.y) > Constants.MAX_BULLET_DISTANCE
+      Math.abs(initialPosition.x - position.x) > Constants.MAX_BULLET_DISTANCE ||
+      Math.abs(initialPosition.y - position.y) > Constants.MAX_BULLET_DISTANCE
     )
   }
 }

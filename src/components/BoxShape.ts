@@ -11,8 +11,8 @@ export type BoxShapeAttributes = {
 export class BoxShape extends ShapeComponent<BoxShapeAttributes> {
   constructor(initAttributes: Partial<BoxShapeAttributes> = {}) {
     super('shape', {
-      height: 100,
-      width: 100,
+      height: 1,
+      width: 1,
       color: 0xf4007a,
       ...initAttributes
     })

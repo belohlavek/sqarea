@@ -2,16 +2,19 @@ import { System, InputController, Key } from 'src/core'
 import { PlayableEntity, BulletEntity } from 'src/entities'
 import { Transform, CircleShape, BoxShape, Bullet } from 'src/components'
 import { Constants } from 'src/gameplay'
+import { Vector2 } from 'src/core/math/Vector2'
 import { throttle } from 'src/utils'
 
 export class BulletSpreadSystem extends System {
   private entity: PlayableEntity
   private bullets: BulletEntity[] = []
-  private input: InputController = InputController.getInstance()
+  private input: InputController = InputController.GetInstance()
 
   constructor(e: PlayableEntity) {
     super()
     this.entity = e
+
+    // TODO: This shouldn't be a throttle, we should control the fire rate
     this.addSpread = throttle(this.addSpread, Constants.BULLET_THROTTLE_MS)
   }
 
@@ -27,10 +30,10 @@ export class BulletSpreadSystem extends System {
         const bullet = bulletEntity.getComponent<Bullet>('bullet')
         const transform = bulletEntity.getComponent<Transform>('transform')
 
-        if (bullet.exceedsMaxDistance(transform.position)) {
+        if (bullet.exceedsMaxDistance(transform.attributes.position)) {
           this.engine.removeEntity(bulletEntity)
         } else {
-          transform.position.x += Constants.BULLET_SPEED * dt
+          transform.attributes.position.x += Constants.BULLET_SPEED * dt
           newBullets.push(bulletEntity)
         }
       }
@@ -39,25 +42,31 @@ export class BulletSpreadSystem extends System {
   }
 
   addSpread = () => {
+    // TODO: We should add 3 (or more) bullets here and animate them using position, velocity and direction
     this.engine.addEntity(this.createBullet())
   }
 
   createBullet() {
     const entityTransform = this.entity.getComponent<Transform>('transform')
-    const entityBoxShape = this.entity.getComponent<BoxShape>('shape')
 
     const bulletEntity = new BulletEntity()
-    const transform = new Transform()
 
-    const position = entityTransform.position.clone()
+    const { position, scale } = entityTransform.attributes
+    const initialPosition = new Vector2().copyFrom(position)
 
-    // Right face
-    transform.position.x = position.x + entityBoxShape.width
-    transform.position.y = position.y + entityBoxShape.height / 2
-    transform.rotation = Math.round(Math.random() * 180)
+    // Center
+    const x = position.x + scale.x / 2
+    const y = position.y + scale.y / 2
+    const rotation = Math.round(Math.random() * 180)
 
-    bulletEntity.addComponent(transform)
-    bulletEntity.addComponent(new Bullet({ initialPosition: position }))
+    bulletEntity.addComponent(
+      new Transform({
+        position: new Vector2(x, y),
+        rotation,
+        scale: new Vector2(20, 20)
+      })
+    )
+    bulletEntity.addComponent(new Bullet({ initialPosition }))
     bulletEntity.addComponent(new CircleShape())
 
     this.bullets.push(bulletEntity)
