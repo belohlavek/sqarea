@@ -25,6 +25,8 @@ const KeyCode = {
 export type KeyState = Record<Key, boolean>
 
 export class InputController {
+  private static Instance: InputController
+
   keyState: KeyState = Object.values(Key).reduce(
     (keyState, key) => ({
       ...keyState,
@@ -34,7 +36,7 @@ export class InputController {
   )
   isListening: boolean = false
 
-  private static Instance: InputController
+  private constructor() {}
 
   static GetInstance() {
     if (!InputController.Instance) {
@@ -42,8 +44,6 @@ export class InputController {
     }
     return InputController.Instance
   }
-
-  private constructor() {}
 
   startListening() {
     if (this.isListening) return

@@ -1,6 +1,5 @@
 import { should } from 'fuse-test-runner'
-import { Engine, Entity, System, Component } from 'src/core'
-import { future } from '../helpers'
+import { Engine, Component } from 'src/core'
 
 export class ComponentTest {
   engine: Engine

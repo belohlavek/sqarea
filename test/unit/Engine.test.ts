@@ -24,7 +24,9 @@ export class EngineTest {
 
   async 'Should successfully add a system'() {
     class Sys extends System {
-      update() {}
+      update() {
+        // Empty system
+      }
     }
     const sys = new Sys()
     const addEventFuture = future()
@@ -62,7 +64,9 @@ export class EngineTest {
 
   async 'Should successfully remove a system'() {
     class Sys extends System {
-      update() {}
+      update() {
+        // Empty system
+      }
     }
     const sys = new Sys()
     const removeEventFuture = future()

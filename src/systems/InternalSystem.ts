@@ -6,6 +6,9 @@ export abstract class InternalSystem extends System {
   protected app: PIXI.Application
   protected trackedEntities: Record<string, Entity> = {}
 
+  protected abstract handleComponentAdded: (entity: Entity, componentType: ComponentType) => void
+  protected abstract handleComponentRemoved: (entity: Entity, componentType: ComponentType) => void
+
   constructor(app: PIXI.Application) {
     super()
     this.app = app
@@ -50,8 +53,4 @@ export abstract class InternalSystem extends System {
       entity.off('component_removed', this.handleComponentRemoved)
     }
   }
-
-  protected abstract handleComponentAdded: (entity: Entity, componentType: ComponentType) => void
-
-  protected abstract handleComponentRemoved: (entity: Entity, componentType: ComponentType) => void
 }

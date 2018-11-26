@@ -10,6 +10,8 @@ export type ComponentAttributeEntry = string | number | HashableObject
 export type ComponentAttributes = Record<string, ComponentAttributeEntry>
 
 export abstract class Component<T extends ComponentAttributes = any> {
+  attributes: T
+
   // @internal
   uuid: string = uuid()
 
@@ -24,8 +26,6 @@ export abstract class Component<T extends ComponentAttributes = any> {
 
   // @internal
   private cache: Record<string, string> = {}
-
-  attributes: T
 
   constructor(type: ComponentType, attributes: T) {
     this.type = type

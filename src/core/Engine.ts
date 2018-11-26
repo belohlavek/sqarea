@@ -10,14 +10,17 @@ import { EventManager, EventCallback } from './EventManager'
  * @fires system_removed
  */
 export class Engine {
+  private static Instance: Engine
+
   systems: Record<string, System> = {}
   entities: Record<string, Entity> = {}
   engineObjects: Record<string, PIXI.Container> = {}
   app: PIXI.Application
 
-  private static Instance: Engine
   private eventManager: EventManager = new EventManager()
   private pool: Entity[] = []
+
+  private constructor() {}
 
   static GetInstance(): Engine {
     if (!Engine.Instance) {
@@ -25,8 +28,6 @@ export class Engine {
     }
     return Engine.Instance
   }
-
-  private constructor() {}
 
   addSystem(system: System) {
     if (!this.systems[system.uuid]) {
