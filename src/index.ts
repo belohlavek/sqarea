@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { Engine, InputController } from 'src/core'
-import { BoxShape, Transform, CircleShape } from 'src/components'
+import { BoxShape, Transform } from 'src/components'
 import { MovementSystem, BulletSpreadSystem } from 'src/systems'
-import { PlayableEntity, BulletEntity } from 'src/entities'
+import { PlayableEntity } from 'src/entities'
 import { RenderingSystem } from './systems/RenderingSystem'
 import { TransformSystem } from './systems/TransformSystem'
 

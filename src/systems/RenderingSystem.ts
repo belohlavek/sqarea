@@ -21,6 +21,18 @@ export class RenderingSystem extends InternalSystem {
     }
   }
 
+  protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
+    if (componentType === 'shape') {
+      this.addEntity(entity)
+    }
+  }
+
+  protected handleComponentRemoved = (entity: Entity, componentType: ComponentType) => {
+    if (componentType === 'shape') {
+      this.removeEntity(entity)
+    }
+  }
+
   private getContainerGraphics(container: PIXI.Container): PIXI.Graphics {
     let ref: PIXI.DisplayObject = container.children[0]
     let graphics: PIXI.Graphics
@@ -40,17 +52,5 @@ export class RenderingSystem extends InternalSystem {
       graphics.clear()
     }
     return graphics
-  }
-
-  protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
-    if (componentType === 'shape') {
-      this.addEntity(entity)
-    }
-  }
-
-  protected handleComponentRemoved = (entity: Entity, componentType: ComponentType) => {
-    if (componentType === 'shape') {
-      this.removeEntity(entity)
-    }
   }
 }
