@@ -1,4 +1,21 @@
 const { FuseBox, WebIndexPlugin, EnvPlugin } = require('fuse-box')
+const { TypeHelper } = require('fuse-box-typechecker')
+
+class TypeCheckerPlugin {
+  constructor() {
+    this.checker = TypeHelper({
+      tsConfig: './tsconfig.json',
+      basePath: './',
+      tsLint: './tslint.json',
+      name: 'Test Sync'
+    })
+    this.checker.startTreadAndWait()
+  }
+
+  postBundle() {
+    this.checker.useThreadAndTypecheck()
+  }
+}
 
 const fuse = FuseBox.init({
   homeDir: 'src',
@@ -14,7 +31,8 @@ const fuse = FuseBox.init({
     }),
     EnvPlugin({
       NODE_ENV: 'dev'
-    })
+    }),
+    new TypeCheckerPlugin()
   ]
 })
 

@@ -21,10 +21,14 @@
   },
   "devDependencies": {
     "@types/pixi.js": "^4.8.3",
+    "dcl-tslint-config-standard": "^1.1.0",
     "fuse-box": "^3.6.0",
+    "fuse-box-typechecker": "^2.11.0",
     "fuse-test-runner": "^1.0.16",
     "madge": "^3.3.0",
     "prettier": "^1.15.2",
+    "tslint": "^5.11.0",
+    "tslint-language-service": "^0.9.9",
     "typescript": "^3.1.6"
   }
 }
