@@ -69,6 +69,7 @@ export abstract class System {
    * Returns a reference to an Entity stored in the Engine
    */
   protected getEntityById(uuid: string): Entity | null {
+    // TODO: maybe get with <T> ?
     let entity: Entity | null = null
     if (this.engine) {
       entity = this.engine.entities[uuid] || null

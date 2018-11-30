@@ -15,7 +15,7 @@ type CameraAttributes = {
 export class Camera extends InternalComponent<CameraAttributes> {
   constructor(initAttributes: Partial<CameraAttributes> = {}) {
     super('camera', {
-      pivot: new Vector2(0.5, 0.5),
+      pivot: new Vector2(0, 0),
       target: null,
       viewportWidth: 0,
       viewportHeight: 0,

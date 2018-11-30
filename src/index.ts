@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'dev') {
 inputController.startListening()
 
 function initCamera() {
-  const camera = new CameraEntity(app.stage.width, app.stage.height)
+  const camera = new CameraEntity(800, 600)
   camera.debugName = 'Camera Entity'
   engine.addEntity(camera)
 
