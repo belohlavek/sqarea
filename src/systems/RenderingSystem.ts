@@ -1,14 +1,9 @@
-import * as PIXI from 'pixi.js'
 import { Entity } from 'src/core'
 import { ShapeComponent, ComponentType, ShapeKind, RectShape, CircleShape } from 'src/components'
 import { renderRect, renderCircle } from 'src/renderers/renderShape'
 import { PixiSystem } from './PixiSystem'
 
 export class RenderingSystem extends PixiSystem {
-  constructor(app: PIXI.Application) {
-    super(app)
-  }
-
   protected shouldTrackEntity(entity: Entity) {
     const shape = entity.getComponent<ShapeComponent>('shape')
 

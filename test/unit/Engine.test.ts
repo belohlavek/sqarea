@@ -6,7 +6,7 @@ export class EngineTest {
   engine: Engine
 
   beforeEach() {
-    this.engine = new (Engine as any)()
+    this.engine = new Engine()
   }
 
   'Should successfully create an Engine'() {

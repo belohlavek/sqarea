@@ -1,4 +1,4 @@
-import { Entity } from 'src/core'
+import { Entity, engine } from 'src/core'
 import { Transform, ComponentType } from 'src/components'
 import { Camera } from 'src/components/Camera'
 import { Vector2 } from 'src/core/math/Vector2'
@@ -35,7 +35,7 @@ export class CameraFollowSystem extends PixiSystem {
   update(dt: number) {
     const entity = this.cameraEntity
     const camera = entity.getComponent<Camera>('camera')
-    const target = this.engine.entities[camera.attributes.target]
+    const target = engine.entities[camera.attributes.target]
     const targetTransform = target ? target.getComponent<Transform>('transform') : null
     const targetPosition = targetTransform ? targetTransform.attributes.position : new Vector2(0, 0)
     const container = this.getPixiEntity(entity)

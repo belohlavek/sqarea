@@ -1,8 +1,7 @@
 import { Component } from './Component'
+import { EventManager, EventCallback } from './EventManager'
 import { ComponentType } from 'src/components/types'
 import { uuid } from 'src/utils'
-import { Engine } from './Engine'
-import { EventManager, EventCallback } from './EventManager'
 
 /**
  * @fires component_added
@@ -13,9 +12,6 @@ import { EventManager, EventCallback } from './EventManager'
 export class Entity {
   // @internal
   readonly uuid: string = uuid()
-
-  // @internal
-  engine: Engine
 
   // @internal
   debugName: string = 'Unamed Entity'

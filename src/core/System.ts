@@ -1,7 +1,6 @@
-import { uuid } from 'src/utils'
-import { Engine } from './Engine'
-import { Entity } from './Entity'
+import { Entity, engine } from 'src/core'
 import { ComponentType } from 'src/components'
+import { uuid } from 'src/utils'
 
 function noop() {
   // This method allows the creation of protected, optional lamdba-property handlers
@@ -12,11 +11,6 @@ export abstract class System {
    * @internal
    */
   uuid: string = uuid()
-
-  /**
-   * @internal
-   */
-  engine: Engine
 
   /**
    * The order in which it will be executed by the engine
@@ -39,8 +33,8 @@ export abstract class System {
    * Called after the System was added to the Engine
    */
   systemDidMount() {
-    this.engine.on('entity_added', this.trackEntity)
-    this.engine.on('entity_removed', this.untrackEntity)
+    engine.on('entity_added', this.trackEntity)
+    engine.on('entity_removed', this.untrackEntity)
   }
 
   /**
@@ -68,7 +62,7 @@ export abstract class System {
    * Returns a reference to an Entity stored in the Engine
    */
   protected getEntityById(uuid: string): Entity | null {
-    return this.engine.entities[uuid] || null
+    return engine.entities[uuid] || null
   }
 
   /**
