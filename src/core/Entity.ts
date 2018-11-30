@@ -2,6 +2,7 @@ import { Component } from './Component'
 import { EventManager, EventCallback } from './EventManager'
 import { ComponentType } from 'src/components/types'
 import { uuid } from 'src/utils'
+import { Engine } from './Engine'
 
 /**
  * @fires component_added
@@ -18,6 +19,9 @@ export class Entity {
 
   // @internal
   components: Record<string, Component> = {}
+
+  // @internal
+  engine: Engine
 
   enabled: boolean = false
 

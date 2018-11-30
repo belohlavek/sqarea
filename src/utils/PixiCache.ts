@@ -39,7 +39,7 @@ export class PixiCache {
         break
       }
     }
-
+    debugger
     return path
   }
 
