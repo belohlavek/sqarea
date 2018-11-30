@@ -4,14 +4,14 @@ import { Camera } from 'src/components/Camera'
 import { Vector2 } from 'src/core/math/Vector2'
 import { renderCamera } from 'src/renderers/renderCamera'
 import { PixiSystem } from './PixiSystem'
+import { PixiCache } from 'src/utils'
 
 export class CameraFollowSystem extends PixiSystem {
   cameraEntity: Entity
   container: Entity
-  // TODO do something with this ^
 
-  constructor(app: PIXI.Application, camera: Entity, container: Entity) {
-    super(app)
+  constructor(cache: PixiCache, camera: Entity, container: Entity) {
+    super(cache)
     this.cameraEntity = camera
     this.container = container
   }

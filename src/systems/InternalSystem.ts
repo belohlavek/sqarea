@@ -11,7 +11,7 @@ export class InternalSystem extends PixiSystem {
       const parent = this.getPixiEntity(entity.parent)
       parent.addChild(internal)
     } else {
-      this.app.stage.addChild(internal)
+      this.stage.addChild(internal)
     }
   }
 
