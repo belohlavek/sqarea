@@ -1,8 +1,8 @@
 import * as PIXI from 'pixi.js'
-import { Engine, InputController, Entity } from 'src/core'
-import { RectShape, Transform, CircleShape } from 'src/components'
+import { Entity, engine, inputController } from 'src/core'
+import { RectShape, Transform } from 'src/components'
 import { MovementSystem, BulletSpreadSystem } from 'src/systems'
-import { PlayableEntity, BulletEntity } from 'src/entities'
+import { PlayableEntity } from 'src/entities'
 import { RenderingSystem } from './systems/RenderingSystem'
 import { TransformSystem } from './systems/TransformSystem'
 import { CameraFollowSystem } from './systems/CameraFollowSystem'
@@ -14,13 +14,12 @@ declare const process
 
 const view = document.getElementById('game') as HTMLCanvasElement
 const app = new PIXI.Application({ view })
-const engine = Engine.GetInstance()
 
 if (process.env.NODE_ENV === 'dev') {
   window['engine'] = engine
 }
 
-InputController.GetInstance().startListening()
+inputController.startListening()
 
 function initCamera() {
   const camera = new CameraEntity(app.stage.width, app.stage.height)
@@ -65,9 +64,7 @@ function init() {
 
   engine.addSystem(new CameraFollowSystem(app, camera, worldContainer))
 
-  app.ticker.add(dt => {
-    engine.update(dt)
-  })
+  app.ticker.add(dt => engine.update(dt))
 }
 
 init()

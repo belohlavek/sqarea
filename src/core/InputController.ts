@@ -34,16 +34,7 @@ export class InputController {
   )
   isListening: boolean = false
 
-  private static Instance: InputController
-
-  static GetInstance() {
-    if (!InputController.Instance) {
-      InputController.Instance = new InputController()
-    }
-    return InputController.Instance
-  }
-
-  private constructor() {}
+  constructor() {}
 
   startListening() {
     if (this.isListening) return

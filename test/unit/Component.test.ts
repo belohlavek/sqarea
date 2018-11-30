@@ -1,14 +1,7 @@
 import { should } from 'fuse-test-runner'
-import { Engine, Entity, System, Component } from 'src/core'
-import { future } from '../helpers'
+import { Component } from 'src/core'
 
 export class ComponentTest {
-  engine: Engine
-
-  beforeEach() {
-    this.engine = new (Engine as any)()
-  }
-
   'Should successfully create a Component'() {
     class Compy extends Component {}
     should(new Compy('__test__', {})).beInstanceOf(Compy)

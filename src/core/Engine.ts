@@ -3,7 +3,6 @@ import { EventManager, EventCallback } from './EventManager'
 
 /**
  * The Engine keeps track of all ECS-related entities and systems.
- * It a singleton and should only be lazily instanced via the GetInstance() method.
  * @fires entity_added
  * @fires entity_removed
  * @fires system_added
@@ -13,18 +12,10 @@ export class Engine {
   systems: System[] = []
   entities: Record<string, Entity> = {}
 
-  private static Instance: Engine
   private eventManager: EventManager = new EventManager()
   private pool: Entity[] = []
 
-  static GetInstance(): Engine {
-    if (!Engine.Instance) {
-      Engine.Instance = new Engine()
-    }
-    return Engine.Instance
-  }
-
-  private constructor() {}
+  constructor() {}
 
   /**
    * Adds a new System to the engine's update loop.
