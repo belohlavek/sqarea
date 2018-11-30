@@ -9,7 +9,7 @@ import { CameraFollowSystem } from './systems/CameraFollowSystem'
 import { Vector2 } from './core/math/Vector2'
 import { CameraEntity } from './entities/CameraEntity'
 import { InternalSystem } from './systems/InternalSystem'
-import { PixiCache } from './utils'
+import { PixiCache } from './utils/PixiCache'
 
 declare const process
 

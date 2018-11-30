@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { System, Entity } from 'src/core'
-import { PixiCache } from 'src/utils'
+import { PixiCache } from 'src/utils/PixiCache'
 
 /**
  * Helper class to create systems that depend or modify PIXI's scene tree.

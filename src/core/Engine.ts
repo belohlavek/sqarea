@@ -131,3 +131,5 @@ export class Engine {
     this.eventManager.emit(evt, args)
   }
 }
+
+export const engine = new Engine()

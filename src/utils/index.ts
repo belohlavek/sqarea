@@ -17,5 +17,3 @@ export function throttle(callback: Function, limit: number) {
     }
   }
 }
-
-export { PixiCache } from './PixiCache'

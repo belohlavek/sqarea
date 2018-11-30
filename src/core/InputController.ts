@@ -78,3 +78,5 @@ export class InputController {
     return KeyCode[keyCode] || Key.NONE
   }
 }
+
+export const inputController = new InputController()
