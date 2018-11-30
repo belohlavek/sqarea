@@ -1,6 +1,6 @@
-export { BoxShape } from './BoxShape'
+export { RectShape } from './RectShape'
 export { CircleShape } from './CircleShape'
 export { ShapeComponent } from './ShapeComponent'
 export { Bullet } from './Bullet'
 export { Transform } from './Transform'
-export { ComponentType, BOX_SHAPE } from './types'
+export { ComponentType, ShapeKind } from './types'

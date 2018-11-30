@@ -1,6 +1,6 @@
 import { System, InputController, Key } from 'src/core'
 import { PlayableEntity, BulletEntity } from 'src/entities'
-import { Transform, CircleShape, BoxShape, Bullet } from 'src/components'
+import { Transform, CircleShape, Bullet } from 'src/components'
 import { Constants } from 'src/gameplay'
 import { Vector2 } from 'src/core/math/Vector2'
 import { throttle } from 'src/utils'

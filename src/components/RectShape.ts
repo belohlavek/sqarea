@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { ShapeComponent } from './ShapeComponent'
-import { BOX_SHAPE } from './types'
+import { ShapeKind } from './types'
 
 export type BoxShapeAttributes = {
   height: number
@@ -8,7 +8,7 @@ export type BoxShapeAttributes = {
   color: number
 }
 
-export class BoxShape extends ShapeComponent<BoxShapeAttributes> {
+export class RectShape extends ShapeComponent<BoxShapeAttributes> {
   constructor(initAttributes: Partial<BoxShapeAttributes> = {}) {
     super('shape', {
       height: 1,
@@ -19,12 +19,6 @@ export class BoxShape extends ShapeComponent<BoxShapeAttributes> {
   }
 
   getKind() {
-    return BOX_SHAPE
-  }
-
-  updateContainer(container: PIXI.Container, graphics: PIXI.Graphics) {
-    graphics.beginFill(this.attributes.color, 1)
-    graphics.drawRect(0, 0, this.attributes.height, this.attributes.width)
-    graphics.endFill()
+    return ShapeKind.RECT_SHAPE
   }
 }
