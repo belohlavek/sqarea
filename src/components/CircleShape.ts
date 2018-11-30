@@ -1,5 +1,5 @@
 import { ShapeComponent } from './ShapeComponent'
-import { CIRCLE_SHAPE } from './types'
+import { ShapeKind } from './types'
 
 type CircleShapeAttributes = {
   radius: number
@@ -16,12 +16,6 @@ export class CircleShape extends ShapeComponent<CircleShapeAttributes> {
   }
 
   getKind() {
-    return CIRCLE_SHAPE
-  }
-
-  updateContainer(container: PIXI.Container, graphics: PIXI.Graphics) {
-    graphics.beginFill(this.attributes.color, 1)
-    graphics.drawCircle(0, 0, this.attributes.radius)
-    graphics.endFill()
+    return ShapeKind.CIRCLE_SHAPE
   }
 }

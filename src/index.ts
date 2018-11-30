@@ -1,10 +1,14 @@
 import * as PIXI from 'pixi.js'
-import { Engine, InputController } from 'src/core'
-import { BoxShape, Transform } from 'src/components'
+import { Engine, InputController, Entity } from 'src/core'
+import { RectShape, Transform, CircleShape } from 'src/components'
 import { MovementSystem, BulletSpreadSystem } from 'src/systems'
 import { PlayableEntity } from 'src/entities'
 import { RenderingSystem } from './systems/RenderingSystem'
 import { TransformSystem } from './systems/TransformSystem'
+import { CameraFollowSystem } from './systems/CameraFollowSystem'
+import { Vector2 } from './core/math/Vector2'
+import { CameraEntity } from './entities/CameraEntity'
+import { InternalSystem } from './systems/InternalSystem'
 
 declare const process
 
@@ -18,21 +22,52 @@ if (process.env.NODE_ENV === 'dev') {
 
 InputController.GetInstance().startListening()
 
+function initCamera() {
+  const camera = new CameraEntity(app.stage.width, app.stage.height)
+  camera.debugName = 'Camera Entity'
+  engine.addEntity(camera)
+
+  return camera
+}
+
 function init() {
+  const worldContainer = new Entity()
+  worldContainer.debugName = 'Camera Container'
+
+  const camera = initCamera()
+
+  const playableEntity = new PlayableEntity()
+  playableEntity.debugName = 'Player Entity'
+  playableEntity.addComponent(new RectShape())
+  playableEntity.addComponent(new Transform())
+
+  const otherEntity = new Entity()
+  otherEntity.debugName = 'Other Entity'
+  otherEntity.addComponent(new RectShape())
+  otherEntity.addComponent(
+    new Transform({
+      position: new Vector2(500, 500),
+      scale: new Vector2(10, 10)
+    })
+  )
+
+  engine.addSystem(new InternalSystem(app, worldContainer), 0)
+  engine.addSystem(new RenderingSystem(app))
+  engine.addSystem(new TransformSystem(app))
+  engine.addSystem(new MovementSystem(playableEntity))
+  engine.addSystem(new BulletSpreadSystem(playableEntity))
+
+  worldContainer.addChild(playableEntity)
+  worldContainer.addChild(otherEntity)
+  engine.addEntity(worldContainer)
+
+  camera.follow(playableEntity)
+
+  engine.addSystem(new CameraFollowSystem(app, camera, worldContainer))
+
   app.ticker.add(dt => {
     engine.update(dt)
   })
 }
-
-const playableEntity = new PlayableEntity()
-playableEntity.addComponent(new BoxShape())
-playableEntity.addComponent(new Transform())
-
-engine.addSystem(new RenderingSystem(app))
-engine.addSystem(new TransformSystem(app))
-engine.addSystem(new MovementSystem(playableEntity))
-engine.addSystem(new BulletSpreadSystem(playableEntity))
-
-engine.addEntity(playableEntity)
 
 init()

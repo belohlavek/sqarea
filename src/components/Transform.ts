@@ -18,6 +18,7 @@ export class Transform extends InternalComponent<TransformAttributes> {
     })
   }
 
+  // TODO: move to renderer
   updateContainer(container: PIXI.Container, graphics: PIXI.Graphics) {
     container.x = this.attributes.position.x
     container.y = this.attributes.position.y

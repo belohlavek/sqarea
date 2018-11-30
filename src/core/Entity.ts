@@ -7,6 +7,8 @@ import { EventManager, EventCallback } from './EventManager'
 /**
  * @fires component_added
  * @fires component_removed
+ * @fires child_added
+ * @fires child_removed
  */
 export class Entity {
   // @internal
@@ -14,6 +16,9 @@ export class Entity {
 
   // @internal
   engine: Engine
+
+  // @internal
+  debugName: string = 'Unamed Entity'
 
   // @internal
   components: Record<string, Component> = {}
@@ -65,14 +70,19 @@ export class Entity {
     if (entity !== null) {
       this.children.push(entity)
       entity._parent = this
+
+      this.emit('child_added', this, entity)
     }
   }
 
   removeChild(entity: Entity) {
     const index = this.children.indexOf(entity)
+
     if (index) {
       this.children.splice(index, 1)
       entity._parent = null
+
+      this.emit('child_removed', this, entity)
     }
   }
 
