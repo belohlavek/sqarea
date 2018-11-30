@@ -4,12 +4,16 @@ import { Entity } from 'src/core'
 export class InternalSystem extends PixiSystem {
   protected handleEntityAdded = (entity: Entity) => {
     const internal = new PIXI.Container()
-    internal['uuid'] = entity.uuid
+    ;(internal as any)['uuid'] = entity.uuid
     internal.name = entity.debugName
 
     if (entity.parent) {
       const parent = this.getPixiEntity(entity.parent)
-      parent.addChild(internal)
+      if (parent) {
+        parent.addChild(internal)
+      } else {
+        console.log(`Internal System: Unable to append child "${entity.uuid}" to parent (parent not found).`, entity)
+      }
     } else {
       this.stage.addChild(internal)
     }
