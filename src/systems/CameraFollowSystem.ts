@@ -8,12 +8,12 @@ import { PixiCache } from 'src/utils/PixiCache'
 
 export class CameraFollowSystem extends PixiSystem {
   cameraEntity: Entity
-  container: Entity
+  world: Entity
 
-  constructor(cache: PixiCache, camera: Entity, container: Entity) {
+  constructor(cache: PixiCache, camera: Entity, world: Entity) {
     super(cache)
     this.cameraEntity = camera
-    this.container = container
+    this.world = world
   }
 
   protected shouldTrackEntity(entity: Entity) {
@@ -28,25 +28,36 @@ export class CameraFollowSystem extends PixiSystem {
 
   update(dt: number) {
     const entity = this.cameraEntity
-    const camera = entity.getComponent<Camera>('camera')
-    if (!camera) {
+    const worldContainer = this.getPixiEntity(this.world)
+    const cameraComponent = entity.getComponent<Camera>('camera')
+    if (!cameraComponent) {
       console.log(`Camera System: missing camera component on entity "${entity.uuid}"`)
       return
     }
 
-    const target = this.engine && camera.attributes.target ? this.engine.entities[camera.attributes.target] : null
-    const targetTransform = target ? target.getComponent<Transform>('transform') : null
-    const targetPosition = targetTransform ? targetTransform.attributes.position : new Vector2(0, 0)
-    const container = this.getPixiEntity(entity)
-    // TODO: cache engine lookups ^^^^^^
-    // Also simplify ternary operations
+    let target: Transform | undefined
 
-    // TODO: follow speed
-    camera.attributes.pivot.x = (targetPosition.x - camera.attributes.pivot.x) * dt + camera.attributes.pivot.x
-    camera.attributes.pivot.y = (targetPosition.y - camera.attributes.pivot.y) * dt + camera.attributes.pivot.y
+    if (this.engine && cameraComponent.attributes.target) {
+      const targetEntity = this.getEntityById(cameraComponent.attributes.target)
+      if (targetEntity) {
+        target = targetEntity.getComponent<Transform>('transform')
+      }
+    }
 
-    if (container) {
-      renderCamera(container, camera)
+    if (target) {
+      const position = target.attributes.position
+      const width = target.attributes.scale.x
+      const height = target.attributes.scale.y
+
+      // TODO: follow speed
+      cameraComponent.attributes.pivot.x =
+        (position.x + width / 2 - cameraComponent.attributes.pivot.x) * dt + cameraComponent.attributes.pivot.x
+      cameraComponent.attributes.pivot.y =
+        (position.y + height / 2 - cameraComponent.attributes.pivot.y) * dt + cameraComponent.attributes.pivot.y
+
+      if (worldContainer) {
+        renderCamera(worldContainer, cameraComponent)
+      }
     }
   }
 }

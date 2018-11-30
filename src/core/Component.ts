@@ -5,7 +5,7 @@ const GET_HASH_METHOD = 'getHash'
 
 export type HashableObject = { [GET_HASH_METHOD](): string }
 
-export type ComponentAttributeEntry = string | number | HashableObject
+export type ComponentAttributeEntry = string | number | null | HashableObject
 
 export type ComponentAttributes = Record<string, ComponentAttributeEntry>
 
@@ -28,6 +28,7 @@ export abstract class Component<T extends ComponentAttributes = any> {
   private cache: Record<string, string> = {}
 
   constructor(type: ComponentType, attributes: T) {
+    const self = this
     this.type = type
     this._attributes = attributes
     this.attributes = new Proxy(this._attributes, {
@@ -36,7 +37,7 @@ export abstract class Component<T extends ComponentAttributes = any> {
       },
       set(target: T, prop: keyof T, value: T[keyof T]) {
         target[prop] = value
-        this.isDirty = true
+        self.isDirty = true
         return true
       }
     })

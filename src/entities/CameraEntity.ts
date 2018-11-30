@@ -1,6 +1,5 @@
 import { Entity } from 'src/core'
 import { Camera } from 'src/components/Camera'
-import { Vector2 } from 'src/core/math/Vector2'
 
 export class CameraEntity extends Entity {
   component: Camera

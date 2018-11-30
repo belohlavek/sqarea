@@ -30,14 +30,17 @@ export class TransformSystem extends PixiSystem {
     for (let i = 0; i < this.trackedEntities.length; i++) {
       const uuid = this.trackedEntities[i]
       const entity = this.getEntityById(uuid)
-      const transform = entity.getComponent<Transform>('transform')
 
-      if (transform.isDirty) {
-        const container = this.getPixiEntity(entity)
+      if (entity) {
+        const transform = entity.getComponent<Transform>('transform')
 
-        if (container) {
-          transform.updateContainer(container, new PIXI.Graphics())
-          transform.isDirty = false
+        if (transform.isDirty) {
+          const container = this.getPixiEntity(entity)
+
+          if (container) {
+            transform.updateContainer(container, new PIXI.Graphics())
+            transform.isDirty = false
+          }
         }
       }
     }
