@@ -4,14 +4,8 @@ import { renderRect, renderCircle } from 'src/renderers/renderShape'
 import { PixiSystem } from './PixiSystem'
 
 export class RenderingSystem extends PixiSystem {
-  protected shouldTrackEntity(entity: Entity) {
-    const shape = entity.getComponent<ShapeComponent>('shape')
-
-    if (shape) {
-      return true
-    }
-
-    return false
+  protected shouldTrackEntity(entity: Entity): boolean {
+    return !!entity.getComponent<ShapeComponent>('shape')
   }
 
   protected handleEntityCandidate = (entity: Entity) => {
@@ -21,10 +15,10 @@ export class RenderingSystem extends PixiSystem {
   }
 
   protected handleEntityRemoved = (entity: Entity) => {
-    if (delete this.trackedEntities[entity.uuid]) {
-      entity.off('component_added', this.handleComponentAdded)
-      entity.off('component_removed', this.handleComponentRemoved)
-    }
+    const index = this.trackedEntities.indexOf(entity.uuid)
+    this.trackedEntities = this.trackedEntities.splice(index, 1)
+    entity.off('component_added', this.handleComponentAdded)
+    entity.off('component_removed', this.handleComponentRemoved)
   }
 
   protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
@@ -43,23 +37,25 @@ export class RenderingSystem extends PixiSystem {
     for (let i = 0; i < this.trackedEntities.length; i++) {
       const uuid = this.trackedEntities[i]
       const entity = this.getEntityById(uuid)
+      let shape
 
-      // TODO: dani no seas forro
-      const shape = entity.getComponent<ShapeComponent>('shape')
+      if (entity) {
+        shape = entity.getComponent<ShapeComponent>('shape')
 
-      if (shape.isDirty) {
-        const container = this.getPixiEntity(entity) // TODO: check type, this can be null
+        if (shape.isDirty) {
+          const container = this.getPixiEntity(entity) // TODO: check type, this can be null
 
-        if (container) {
-          const kind = shape.getKind()
+          if (container) {
+            const kind = shape.getKind()
 
-          if (kind === ShapeKind.RECT_SHAPE) {
-            renderRect(container, shape as RectShape)
-          } else if (kind === ShapeKind.CIRCLE_SHAPE) {
-            renderCircle(container, shape as CircleShape)
+            if (kind === ShapeKind.RECT_SHAPE) {
+              renderRect(container, shape as RectShape)
+            } else if (kind === ShapeKind.CIRCLE_SHAPE) {
+              renderCircle(container, shape as CircleShape)
+            }
+
+            shape.isDirty = false
           }
-
-          shape.isDirty = false
         }
       }
     }

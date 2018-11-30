@@ -15,7 +15,7 @@ export abstract class System {
   /**
    * @internal
    */
-  engine: Engine = null
+  engine: Engine | undefined
 
   /**
    * The order in which it will be executed by the engine
@@ -31,15 +31,17 @@ export abstract class System {
    * Called every engine tick.
    * @param dt - time elapsed since the previous update
    */
-  abstract update(dt: number)
+  abstract update(dt: number): void
 
   /**
    * @internal
    * Called after the System was added to the Engine
    */
   systemDidMount() {
-    this.engine.on('entity_added', this.trackEntity)
-    this.engine.on('entity_removed', this.untrackEntity)
+    if (this.engine) {
+      this.engine.on('entity_added', this.trackEntity)
+      this.engine.on('entity_removed', this.untrackEntity)
+    }
   }
 
   /**
@@ -67,7 +69,11 @@ export abstract class System {
    * Returns a reference to an Entity stored in the Engine
    */
   protected getEntityById(uuid: string): Entity | null {
-    return this.engine.entities[uuid] || null
+    let entity: Entity | null = null
+    if (this.engine) {
+      entity = this.engine.entities[uuid] || null
+    }
+    return entity
   }
 
   /**

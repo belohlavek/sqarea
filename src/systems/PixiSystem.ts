@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import { System, Entity } from 'src/core'
 import { PixiCache } from 'src/utils/PixiCache'
 
@@ -9,20 +8,9 @@ import { PixiCache } from 'src/utils/PixiCache'
 export abstract class PixiSystem extends System {
   protected cache: PixiCache
 
-  /**
-   * The world container, should be used for anything other than HUDs
-   */
-  protected world: PIXI.Container
-
-  constructor(cache: PixiCache, world?: Entity) {
+  constructor(cache: PixiCache) {
     super()
     this.cache = cache
-
-    if (world) {
-      this.trackEntity(world)
-      const cont = this.getPixiEntity(world)
-      this.world = cont
-    }
   }
 
   get stage() {

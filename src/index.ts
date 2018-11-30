@@ -11,7 +11,8 @@ import { CameraEntity } from './entities/CameraEntity'
 import { InternalSystem } from './systems/InternalSystem'
 import { PixiCache } from './utils/PixiCache'
 
-declare const process
+declare const process: any
+declare const window: any
 
 const view = document.getElementById('game') as HTMLCanvasElement
 const app = new PIXI.Application({ view })
@@ -32,9 +33,10 @@ function initCamera() {
 
 function init() {
   const cache = new PixiCache(app)
+  engine.addSystem(new InternalSystem(cache), 0)
 
   const worldContainer = new Entity()
-  worldContainer.debugName = 'Camera Container'
+  worldContainer.debugName = 'World Container'
 
   const camera = initCamera()
 
@@ -53,7 +55,6 @@ function init() {
     })
   )
 
-  engine.addSystem(new InternalSystem(cache, worldContainer), 0)
   engine.addSystem(new RenderingSystem(cache))
   engine.addSystem(new TransformSystem(cache))
   engine.addSystem(new MovementSystem(playableEntity))

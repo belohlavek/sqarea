@@ -21,7 +21,7 @@ export class Entity {
   components: Record<string, Component> = {}
 
   // @internal
-  engine: Engine
+  engine: Engine | undefined
 
   enabled: boolean = false
 

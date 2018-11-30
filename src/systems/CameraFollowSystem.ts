@@ -17,13 +17,7 @@ export class CameraFollowSystem extends PixiSystem {
   }
 
   protected shouldTrackEntity(entity: Entity) {
-    const shape = entity.getComponent<Camera>('camera')
-
-    if (shape) {
-      return true
-    }
-
-    return false
+    return !!entity.getComponent<Camera>('camera')
   }
 
   protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
@@ -35,16 +29,17 @@ export class CameraFollowSystem extends PixiSystem {
   update(dt: number) {
     const entity = this.cameraEntity
     const camera = entity.getComponent<Camera>('camera')
-    const target = this.engine.entities[camera.attributes.target]
-    const targetTransform = target ? target.getComponent<Transform>('transform') : null
-    const targetPosition = targetTransform ? targetTransform.attributes.position : new Vector2(0, 0)
-    const container = this.getPixiEntity(entity)
-    // TODO: cache engine lookups ^^^^^^
-
     if (!camera) {
       console.log(`Camera System: missing camera component on entity "${entity.uuid}"`)
       return
     }
+
+    const target = this.engine && camera.attributes.target ? this.engine.entities[camera.attributes.target] : null
+    const targetTransform = target ? target.getComponent<Transform>('transform') : null
+    const targetPosition = targetTransform ? targetTransform.attributes.position : new Vector2(0, 0)
+    const container = this.getPixiEntity(entity)
+    // TODO: cache engine lookups ^^^^^^
+    // Also simplify ternary operations
 
     // TODO: follow speed
     camera.attributes.pivot.x = (targetPosition.x - camera.attributes.pivot.x) * dt + camera.attributes.pivot.x

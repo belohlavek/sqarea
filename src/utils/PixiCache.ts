@@ -9,12 +9,17 @@ export class PixiCache {
     this.app = app
   }
 
-  getPixiEntity(entity: Entity): PIXI.Container {
+  getPixiEntity(entity: Entity): PIXI.Container | null {
     if (!this.cache[entity.uuid]) {
       const rootPath = this.getRootPath(entity)
-      this.cache[entity.uuid] = this.getNestedPixiChild(rootPath)
+      const child = this.getNestedPixiChild(rootPath)
+
+      if (child) {
+        this.cache[entity.uuid] = child
+      }
     }
-    return this.cache[entity.uuid]
+
+    return this.cache[entity.uuid] || null
   }
 
   getStage(): PIXI.Container {
@@ -39,16 +44,27 @@ export class PixiCache {
         break
       }
     }
-    debugger
+
+    path.push(entity.uuid)
+
     return path
   }
 
-  private getNestedPixiChild(path: string[]): PIXI.Container {
+  /**
+   * Returns the child obtained from the provided uuid path.
+   */
+  private getNestedPixiChild(path: string[]): PIXI.Container | null {
     let child: PIXI.Container = this.getStage()
 
     for (let i = 0; i < path.length; i++) {
       const uuid = path[i]
-      child = this.getPixiChildByUuid(uuid, child)
+      const pixiChild = this.getPixiChildByUuid(uuid, child)
+
+      if (!pixiChild) {
+        throw new Error(`Pixi Cache: Unable to find a valid pixi entity with uuid "${uuid}" and path ${path}`)
+      }
+
+      child = pixiChild
     }
 
     return child
@@ -57,7 +73,7 @@ export class PixiCache {
   private getPixiChildByUuid(uuid: string, ctx: PIXI.Container): PIXI.Container | null {
     for (let i = 0; i < ctx.children.length; i++) {
       const child = ctx.children[i]
-      if (child['uuid'] === uuid) {
+      if ((child as any)['uuid'] === uuid) {
         // TODO: is really everything a container?
         return child as PIXI.Container
       }
