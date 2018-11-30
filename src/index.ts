@@ -9,6 +9,7 @@ import { CameraFollowSystem } from './systems/CameraFollowSystem'
 import { Vector2 } from './core/math/Vector2'
 import { CameraEntity } from './entities/CameraEntity'
 import { InternalSystem } from './systems/InternalSystem'
+import { PixiCache } from './utils'
 
 declare const process
 
@@ -30,6 +31,8 @@ function initCamera() {
 }
 
 function init() {
+  const cache = new PixiCache(app)
+
   const worldContainer = new Entity()
   worldContainer.debugName = 'Camera Container'
 
@@ -50,9 +53,9 @@ function init() {
     })
   )
 
-  engine.addSystem(new InternalSystem(app, worldContainer), 0)
-  engine.addSystem(new RenderingSystem(app))
-  engine.addSystem(new TransformSystem(app))
+  engine.addSystem(new InternalSystem(cache, worldContainer), 0)
+  engine.addSystem(new RenderingSystem(cache))
+  engine.addSystem(new TransformSystem(cache))
   engine.addSystem(new MovementSystem(playableEntity))
   engine.addSystem(new BulletSpreadSystem(playableEntity))
 
@@ -62,7 +65,7 @@ function init() {
 
   camera.follow(playableEntity)
 
-  engine.addSystem(new CameraFollowSystem(app, camera, worldContainer))
+  engine.addSystem(new CameraFollowSystem(cache, camera, worldContainer))
 
   app.ticker.add(dt => engine.update(dt))
 }
