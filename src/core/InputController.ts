@@ -25,8 +25,6 @@ const KeyCode = {
 export type KeyState = Record<Key, boolean>
 
 export class InputController {
-  private static Instance: InputController
-
   keyState: KeyState = Object.values(Key).reduce(
     (keyState, key) => ({
       ...keyState,
@@ -36,7 +34,9 @@ export class InputController {
   )
   isListening: boolean = false
 
-  constructor() {}
+  constructor() {
+    // stub
+  }
 
   startListening() {
     if (this.isListening) return
@@ -56,12 +56,12 @@ export class InputController {
     this.isListening = false
   }
 
-  onKeyDown = evt => {
+  onKeyDown = (evt: KeyboardEvent) => {
     const key = this.getKeyFromKeyCode(evt.which)
     this.keyState[key] = true
   }
 
-  onKeyUp = evt => {
+  onKeyUp = (evt: KeyboardEvent) => {
     const key = this.getKeyFromKeyCode(evt.which)
     this.keyState[key] = false
   }
@@ -74,8 +74,8 @@ export class InputController {
     return this.keyState[key]
   }
 
-  getKeyFromKeyCode(keyCode: number) {
-    return KeyCode[keyCode] || Key.NONE
+  getKeyFromKeyCode(keyCode: number): Key {
+    return KeyCode[keyCode as keyof typeof KeyCode] || Key.NONE
   }
 }
 

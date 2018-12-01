@@ -4,6 +4,34 @@ import { renderRect, renderCircle } from 'src/renderers/renderShape'
 import { PixiSystem } from './PixiSystem'
 
 export class RenderingSystem extends PixiSystem {
+  update(_: number) {
+    for (let i = 0; i < this.trackedEntities.length; i++) {
+      const uuid = this.trackedEntities[i]
+      const entity = this.getEntityById(uuid)
+      let shape
+
+      if (entity) {
+        shape = entity.getComponent<ShapeComponent>('shape')
+
+        if (shape.isDirty) {
+          const container = this.getPixiEntity(entity) // TODO: check type, this can be null
+
+          if (container) {
+            const kind = shape.getKind()
+
+            if (kind === ShapeKind.RECT_SHAPE) {
+              renderRect(container, shape as RectShape)
+            } else if (kind === ShapeKind.CIRCLE_SHAPE) {
+              renderCircle(container, shape as CircleShape)
+            }
+
+            shape.isDirty = false
+          }
+        }
+      }
+    }
+  }
+
   protected shouldTrackEntity(entity: Entity): boolean {
     return !!entity.getComponent<ShapeComponent>('shape')
   }
@@ -30,34 +58,6 @@ export class RenderingSystem extends PixiSystem {
   protected handleComponentRemoved = (entity: Entity, componentType: ComponentType) => {
     if (componentType === 'shape') {
       this.untrackEntity(entity)
-    }
-  }
-
-  update(_: number) {
-    for (let i = 0; i < this.trackedEntities.length; i++) {
-      const uuid = this.trackedEntities[i]
-      const entity = this.getEntityById(uuid)
-      let shape
-
-      if (entity) {
-        shape = entity.getComponent<ShapeComponent>('shape')
-
-        if (shape.isDirty) {
-          const container = this.getPixiEntity(entity) // TODO: check type, this can be null
-
-          if (container) {
-            const kind = shape.getKind()
-
-            if (kind === ShapeKind.RECT_SHAPE) {
-              renderRect(container, shape as RectShape)
-            } else if (kind === ShapeKind.CIRCLE_SHAPE) {
-              renderCircle(container, shape as CircleShape)
-            }
-
-            shape.isDirty = false
-          }
-        }
-      }
     }
   }
 }

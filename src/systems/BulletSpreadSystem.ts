@@ -29,7 +29,7 @@ export class BulletSpreadSystem extends System {
         const bullet = bulletEntity.getComponent<Bullet>('bullet')
         const transform = bulletEntity.getComponent<Transform>('transform')
 
-        if (bullet.exceedsMaxDistance(transform.attributes.position)) {
+        if (this.engine && bullet.exceedsMaxDistance(transform.attributes.position)) {
           this.engine.removeEntity(bulletEntity)
         } else {
           transform.attributes.position.x += Constants.BULLET_SPEED * dt
@@ -42,7 +42,9 @@ export class BulletSpreadSystem extends System {
 
   addSpread = () => {
     // TODO: We should add 3 (or more) bullets here and animate them using position, velocity and direction
-    this.engine.addEntity(this.createBullet())
+    if (this.engine) {
+      this.engine.addEntity(this.createBullet())
+    }
   }
 
   createBullet() {

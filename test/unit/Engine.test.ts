@@ -3,7 +3,7 @@ import { Engine, Entity, System } from 'src/core'
 import { future } from '../helpers'
 
 export class EngineTest {
-  engine: Engine
+  engine: Engine = new Engine()
 
   beforeEach() {
     this.engine = new Engine()
@@ -32,7 +32,7 @@ export class EngineTest {
     const addEventFuture = future()
     this.engine.on('system_added', e => addEventFuture.resolve(e))
     this.engine.addSystem(sys)
-    should(this.engine.systems[sys.uuid]).beOkay()
+    should(this.engine.systems.find(s => s.uuid === sys.uuid)).beOkay()
     should(await addEventFuture).equal(sys)
   }
 
@@ -72,7 +72,7 @@ export class EngineTest {
     const removeEventFuture = future()
     this.engine.on('system_removed', e => removeEventFuture.resolve(e))
     this.engine.removeSystem(sys)
-    should(this.engine.systems[sys.uuid]).equal(undefined)
+    should(this.engine.systems.find(s => s.uuid === sys.uuid)).equal(undefined)
     should(await removeEventFuture).equal(sys)
   }
 
@@ -89,7 +89,7 @@ export class EngineTest {
   async 'Should update systems on engine update'() {
     const updateFuture = future()
     class Sys extends System {
-      update(dt) {
+      update(dt: number) {
         updateFuture.resolve(dt)
       }
     }

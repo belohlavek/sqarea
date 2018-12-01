@@ -67,12 +67,10 @@ export class Entity {
 
   addChild(entity: Entity) {
     // TODO: prevent circular relationships
-    if (entity !== null) {
-      this.children.push(entity)
-      entity._parent = this
+    this.children.push(entity)
+    entity._parent = this
 
-      this.emit('child_added', this, entity)
-    }
+    this.emit('child_added', this, entity)
   }
 
   removeChild(entity: Entity) {

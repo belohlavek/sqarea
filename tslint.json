@@ -3,7 +3,8 @@
   "rules": {
     "quotemark": false,
     "ban-types": [true, "Number", "Boolean", "String", "Object"],
-    "no-parameter-reassignment": true
+    "no-parameter-reassignment": true,
+    "return-undefined": false
   },
   "linterOptions": {
     "exclude": ["packages/engine/vendor/**", "test/**", "packages/decentraland-ecs/api-docs-review/decentraland-ecs.api.ts"]

@@ -3,10 +3,10 @@
  * @param container
  */
 export function getContainerGraphics(container: PIXI.Container): PIXI.Graphics {
-  let ref: PIXI.DisplayObject = container.children[0]
-  let graphics: PIXI.Graphics
+  let ref: PIXI.DisplayObject & { isGraphic?: boolean } = container.children[0]
+  let graphics: PIXI.Graphics & { isGraphic?: boolean }
 
-  if (!ref || (ref && !ref['isGraphic'])) {
+  if (!ref || (ref && !ref.isGraphic)) {
     graphics = new PIXI.Graphics()
     graphics['isGraphic'] = true // faster than instanceof
 

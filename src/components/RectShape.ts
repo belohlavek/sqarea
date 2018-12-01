@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import { ShapeComponent } from './ShapeComponent'
 import { ShapeKind } from './types'
 

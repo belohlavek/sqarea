@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js'
 import { Vector2 } from 'src/core/math/Vector2'
 import { InternalComponent } from './InternalComponent'
 
@@ -16,16 +15,5 @@ export class Transform extends InternalComponent<TransformAttributes> {
       scale: new Vector2(100, 100),
       ...initAttributes
     })
-  }
-
-  // TODO: move to renderer
-  updateContainer(container: PIXI.Container, graphics: PIXI.Graphics) {
-    container.x = this.attributes.position.x
-    container.y = this.attributes.position.y
-
-    container.rotation = this.attributes.rotation
-
-    container.width = this.attributes.scale.x
-    container.height = this.attributes.scale.y
   }
 }

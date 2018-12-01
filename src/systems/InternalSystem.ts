@@ -2,6 +2,10 @@ import { PixiSystem } from './PixiSystem'
 import { Entity } from 'src/core'
 
 export class InternalSystem extends PixiSystem {
+  update() {
+    // stub
+  }
+
   protected handleEntityAdded = (entity: Entity) => {
     const internal = new PIXI.Container()
     ;(internal as any)['uuid'] = entity.uuid
@@ -18,6 +22,4 @@ export class InternalSystem extends PixiSystem {
       this.stage.addChild(internal)
     }
   }
-
-  update() {}
 }

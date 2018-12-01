@@ -15,7 +15,9 @@ export class Engine {
   private eventManager: EventManager = new EventManager()
   private pool: Entity[] = []
 
-  constructor() {}
+  constructor() {
+    // stub
+  }
 
   /**
    * Adds a new System to the engine's update loop.
@@ -60,10 +62,9 @@ export class Engine {
   }
 
   removeSystem(system: System) {
-    if (delete this.systems[system.uuid]) {
-      this.emit('system_removed', system)
-    }
-
+    const index = this.systems.indexOf(system)
+    this.systems = this.systems.splice(index, 1)
+    this.emit('system_removed', system)
     return this
   }
 
@@ -121,10 +122,13 @@ export class Engine {
   /**
    * Returns a free entity from the internal entity pool
    */
-  getAvailableEntity() {
-    const ent = this.pool.pop()
-    this.addEntity(ent)
-    return ent
+  getAvailableEntity(): Entity | null {
+    const ent = this.pool.shift()
+    if (ent) {
+      this.addEntity(ent)
+      return ent
+    }
+    return null
   }
 
   private emit(evt: string, ...args: any[]) {

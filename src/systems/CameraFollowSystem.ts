@@ -1,7 +1,6 @@
 import { Entity } from 'src/core'
 import { Transform, ComponentType } from 'src/components'
 import { Camera } from 'src/components/Camera'
-import { Vector2 } from 'src/core/math/Vector2'
 import { renderCamera } from 'src/renderers/renderCamera'
 import { PixiSystem } from './PixiSystem'
 import { PixiCache } from 'src/utils/PixiCache'
@@ -14,16 +13,6 @@ export class CameraFollowSystem extends PixiSystem {
     super(cache)
     this.cameraEntity = camera
     this.world = world
-  }
-
-  protected shouldTrackEntity(entity: Entity) {
-    return !!entity.getComponent<Camera>('camera')
-  }
-
-  protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
-    if (componentType === 'camera' && entity !== this.cameraEntity) {
-      throw new Error(`Camera System: multiple camera instances are not supported`)
-    }
   }
 
   update(dt: number) {
@@ -58,6 +47,16 @@ export class CameraFollowSystem extends PixiSystem {
       if (worldContainer) {
         renderCamera(worldContainer, cameraComponent)
       }
+    }
+  }
+
+  protected shouldTrackEntity(entity: Entity) {
+    return !!entity.getComponent<Camera>('camera')
+  }
+
+  protected handleComponentAdded = (entity: Entity, componentType: ComponentType) => {
+    if (componentType === 'camera' && entity !== this.cameraEntity) {
+      throw new Error(`Camera System: multiple camera instances are not supported`)
     }
   }
 }

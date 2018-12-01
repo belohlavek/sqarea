@@ -28,6 +28,31 @@ export abstract class System {
   protected trackedEntities: string[] = []
 
   /**
+   * Called before shouldAddEntity()
+   */
+  protected handleEntityCandidate: (entity: Entity) => void = noop
+
+  /**
+   * Called after an entity was tracked by the system
+   */
+  protected handleEntityAdded: (entity: Entity) => void = noop
+
+  /**
+   * Called after an entity was removed from the system
+   */
+  protected handleEntityRemoved: (entity: Entity) => void = noop
+
+  /**
+   * Called after a component was added to an engine entity
+   */
+  protected handleComponentAdded: (entity: Entity, componentType: ComponentType) => void = noop
+
+  /**
+   * Called after a component was removed from an engine entity
+   */
+  protected handleComponentRemoved: (entity: Entity, componentType: ComponentType) => void = noop
+
+  /**
    * Called every engine tick.
    * @param dt - time elapsed since the previous update
    */
@@ -84,51 +109,4 @@ export abstract class System {
   protected shouldTrackEntity(_: Entity): boolean {
     return true
   }
-
-  // /**
-  //  * Called after a child is added to a tracked entity
-  //  * @param parent
-  //  * @param child
-  //  */
-  // protected handleEntityChildAdded(parent: Entity, child: Entity) {
-  //   const parentContainer = this.getEngineObject(parent)
-  //   const childContainer = this.getEngineObject(child)
-  //   parentContainer.addChild(childContainer)
-  // }
-
-  // /**
-  //  * Called after a child is removed from a tracked entity
-  //  * @param parent
-  //  * @param child
-  //  */
-  // protected handleEntityChildRemoved(parent: Entity, child: Entity) {
-  //   const parentContainer = this.getEngineObject(child)
-  //   const childContainer = this.getEngineObject(parent)
-  //   parentContainer.removeChild(childContainer)
-  // }
-
-  /**
-   * Called before shouldAddEntity()
-   */
-  protected handleEntityCandidate: (entity: Entity) => void = noop
-
-  /**
-   * Called after an entity was tracked by the system
-   */
-  protected handleEntityAdded: (entity: Entity) => void = noop
-
-  /**
-   * Called after an entity was removed from the system
-   */
-  protected handleEntityRemoved: (entity: Entity) => void = noop
-
-  /**
-   * Called after a component was added to an engine entity
-   */
-  protected handleComponentAdded: (entity: Entity, componentType: ComponentType) => void = noop
-
-  /**
-   * Called after a component was removed from an engine entity
-   */
-  protected handleComponentRemoved: (entity: Entity, componentType: ComponentType) => void = noop
 }
