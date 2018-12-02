@@ -22,4 +22,8 @@ export class InternalSystem extends PixiSystem {
       this.stage.addChild(internal)
     }
   }
+
+  protected handleEntityRemoved = (entity: Entity) => {
+    this.removePixiEntity(entity)
+  }
 }

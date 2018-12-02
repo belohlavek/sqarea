@@ -22,6 +22,10 @@ export class PixiCache {
     return this.cache[entity.uuid] || null
   }
 
+  removePixiEntity(entity: Entity): void {
+    delete this.cache[entity.uuid]
+  }
+
   getStage(): PIXI.Container {
     return this.app.stage
   }

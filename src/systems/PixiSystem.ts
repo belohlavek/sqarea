@@ -20,4 +20,8 @@ export abstract class PixiSystem extends System {
   getPixiEntity(entity: Entity) {
     return this.cache.getPixiEntity(entity)
   }
+
+  removePixiEntity(entity: Entity) {
+    return this.cache.removePixiEntity(entity)
+  }
 }
